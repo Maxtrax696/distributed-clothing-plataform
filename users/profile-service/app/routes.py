@@ -53,7 +53,9 @@ def create_profile(profile: Profile):
     conn.commit()
     cur.close()
     conn.close()
-    return {"message": "Perfil creado correctamente"}
+    return {
+        "message": "Perfil creado correctamente"
+    }
 
 
 @router.put("/{user_id}")
@@ -73,7 +75,9 @@ def update_profile(user_id: str, update: ProfileUpdate):
     conn.commit()
     cur.close()
     conn.close()
-    return {"message": "Perfil actualizado correctamente"}
+    return {
+        "message": "Perfil actualizado correctamente"
+    }
 
 
 @router.delete("/{user_id}")

@@ -11,6 +11,6 @@ class Profile(BaseModel):
 
 
 class ProfileUpdate(BaseModel):
-    full_name:Optional[str]
-    birth_date:Optional[date]
-    phone_number:Optional[str]
+    full_name: Optional[str]
+    birth_date: Optional[date]
+    phone_number: Optional[str]
