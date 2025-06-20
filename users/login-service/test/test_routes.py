@@ -1,10 +1,13 @@
-import requests
+from app import create_app
 
-def test_login_endpoint():
-    url = "http://localhost:5003/login"
-    payload = {
-        "email": "testuser@example.com",
-        "password": "test123"
-    }
-    response = requests.post(url, json=payload)
+def test_login():
+    app = create_app()
+    client = app.test_client()
+
+    response = client.post('/login', json={
+        "email": "test@example.com",
+        "password": "1234"
+    })
+
+    # Accept either 200 OK or 401 Unauthorized
     assert response.status_code in [200, 401]
