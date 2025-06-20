@@ -29,8 +29,12 @@ def get_profile(user_id: str):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        cur.execute("SELECT ... FROM profiles WHERE user_id = %s",
-        (user_id,))
+        """
+        SELECT full_name, birth_date, phone_number
+        FROM profiles
+        WHERE user_id = %s
+        """,
+        (user_id,),
     )
     row = cur.fetchone()
     cur.close()
@@ -43,6 +47,7 @@ def get_profile(user_id: str):
         "birth_date": row[1],
         "phone_number": row[2],
     }
+
 
 
 @router.post("/")
