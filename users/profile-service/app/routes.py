@@ -29,9 +29,7 @@ def get_profile(user_id: str):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        "SELECT full_name, birth_date, phone_number FROM profiles"
-        "WHERE user_id = %s",
-        (user_id,),
+        cur.execute("SELECT ... FROM profiles WHERE user_id = %s", (user_id,))
     )
     row = cur.fetchone()
     cur.close()

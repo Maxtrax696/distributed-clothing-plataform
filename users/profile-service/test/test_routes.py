@@ -14,7 +14,8 @@ test_profile = {
 def test_create_profile():
     response = client.post("/api/profiles/", json=test_profile)
     assert response.status_code == 200
-    assert response.json()["message"] == "Perfil creado correctamente"
+    assert response.json()["message"] == "Profile successfully created"
+
 
 
 def test_get_profile():
@@ -31,10 +32,11 @@ def test_update_profile():
     }
     response = client.put(f"/api/profiles/{test_profile['user_id']}", json=updated_data)
     assert response.status_code == 200
-    assert response.json()["message"] == "Perfil actualizado correctamente"
+    assert response.json()["message"] == "Profile successfully updated"
 
 
 def test_delete_profile():
     response = client.delete(f"/api/profiles/{test_profile['user_id']}")
     assert response.status_code == 200
-    assert response.json()["message"] == "Perfil eliminado correctamente"
+    assert response.json()["message"] == "Profile successfully deleted"
+
