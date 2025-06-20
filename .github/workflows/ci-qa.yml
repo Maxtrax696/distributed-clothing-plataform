@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Lint y Pruebas en profile-service
+    name: Lint y Tests en profile-service
     runs-on: ubuntu-latest
 
     services:
@@ -29,23 +29,37 @@ jobs:
     - name: Clonar repositorio
       uses: actions/checkout@v3
 
-    - name: Configurar Python
+    - name: Config Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    - name: Instalar dependencias
+    - name: Create 'profiles' table
+      run: |
+        psql -h localhost -U postgres -d users_db -c "
+        CREATE TABLE IF NOT EXISTS profiles (
+          id SERIAL PRIMARY KEY,
+          user_id UUID NOT NULL,
+          full_name VARCHAR(255),
+          birth_date DATE,
+          phone_number VARCHAR(20),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );"
+      env:
+        PGPASSWORD: postgres
+
+    - name: install dependences
       working-directory: users/profile-service
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest
 
-    - name: Ejecutar Flake8
+    - name: Execute Flake8
       working-directory: users/profile-service
       run: flake8 app/
 
-    - name: Ejecutar Tests
+    - name: Execute Tests
       env:
         POSTGRES_DB: users_db
         POSTGRES_USER: postgres
