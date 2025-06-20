@@ -17,3 +17,5 @@ def create_profile(profile: Profile):
     cur.close()
     conn.close()
     return {"message": "Perfil creado"}
+
+#Temporal change
