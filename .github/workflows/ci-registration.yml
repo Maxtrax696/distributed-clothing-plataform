@@ -25,15 +25,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run tests
-        run: |
-          if [ -f test/test_routes.py ]; then
-            pip install pytest
-            pytest
-          else
-            echo "No tests found"
-          fi
-      
       - name: Run tests (if any)
         run: |
           if [ -f test/test_routes.py ]; then
