@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: CI/CD - Producción
 
 on:
   push:
@@ -7,19 +7,20 @@ on:
 
 jobs:
   build-and-deploy:
+    name: Build y Deploy a DockerHub
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout código
+    - name: Clonar repositorio
       uses: actions/checkout@v3
 
-    - name: Login en DockerHub
+    - name: Login en Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build y Push de profile-service
+    - name: Build y Push del profile-service
       run: |
-        docker build -t esmaigua/profile-service:latest users/profile-service
-        docker push esmaigua/profile-service:latest
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/profile-service:latest users/profile-service
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/profile-service:latest
