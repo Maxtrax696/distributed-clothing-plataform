@@ -30,10 +30,7 @@ jobs:
       run: flake8 app/
 
     - name: Ejecutar Tests
-      working-directory: users/profile-service
-      env:
-        PYTHONPATH: ./users/profile-service
       run: |
         pip install pytest
-        pytest test/
+        PYTHONPATH=$PWD/users/profile-service pytest users/profile-service/test
 
