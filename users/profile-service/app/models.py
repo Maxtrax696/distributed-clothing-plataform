@@ -9,7 +9,7 @@ class Profile(BaseModel):
     birth_date: Optional[date]
     phone_number: Optional[str]
 
-#ADD CRUD
+
 class ProfileUpdate(BaseModel):
     full_name:Optional[str]
     birth_date:Optional[date]

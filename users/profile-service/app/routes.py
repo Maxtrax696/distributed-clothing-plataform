@@ -84,4 +84,6 @@ def delete_profile(user_id: str):
     conn.commit()
     cur.close()
     conn.close()
-    return {"message": "Perfil eliminado correctamente"}
+    return {
+        "message": "Perfil eliminado correctamente"
+    }
