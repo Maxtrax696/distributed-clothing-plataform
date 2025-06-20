@@ -49,7 +49,6 @@ def get_profile(user_id: str):
     }
 
 
-
 @router.post("/")
 def create_profile(profile: Profile):
     conn = get_connection()
