@@ -29,5 +29,23 @@ services:
     command: >
       sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
+  roles-service:
+    build: ./users/roles-service
+    env_file:
+      - ./users/roles-service/.env
+    container_name: roles-service
+    depends_on:
+      - db
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    ports:
+      - "8001:8001"
+    command: >
+      sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8001"
+
 volumes:
   db_data:
