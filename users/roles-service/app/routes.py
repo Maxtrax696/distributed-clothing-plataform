@@ -81,3 +81,8 @@ def delete_role(role_id: int):
     cur.close()
     conn.close()
     return {"message": "Role successfully deleted"}
+
+
+@router.get("/")
+def root():
+    return {"status": "roles-service is running"}
