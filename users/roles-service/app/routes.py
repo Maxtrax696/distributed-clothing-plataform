@@ -15,7 +15,11 @@ def list_roles():
     cur.close()
     conn.close()
     return [
-        {"id": row[0], "name": row[1], "description": row[2]} 
+        {
+            "id": row[0],
+            "name": row[1],
+            "description": row[2]
+        }
         for row in rows
     ]
 
@@ -25,7 +29,7 @@ def get_role(role_id: int):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        "SELECT id, name, description FROM roles WHERE id = %s", 
+        "SELECT id, name, description FROM roles WHERE id = %s",
         (role_id,)
     )
     row = cur.fetchone()
@@ -33,7 +37,11 @@ def get_role(role_id: int):
     conn.close()
     if not row:
         raise HTTPException(status_code=404, detail="Role not found")
-    return {"id": row[0], "name": row[1], "description": row[2]}
+    return {
+        "id": row[0],
+        "name": row[1],
+        "description": row[2]
+    }
 
 
 @router.post("/")
@@ -41,7 +49,7 @@ def create_role(role: Role):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        "INSERT INTO roles (name, description) VALUES (%s, %s)", 
+        "INSERT INTO roles (name, description) VALUES (%s, %s)",
         (role.name, role.description)
     )
     conn.commit()
@@ -55,7 +63,7 @@ def update_role(role_id: int, role: RoleUpdate):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
-        "UPDATE roles SET name = %s, description = %s WHERE id = %s", 
+        "UPDATE roles SET name = %s, description = %s WHERE id = %s",
         (role.name, role.description, role_id)
     )
     conn.commit()
