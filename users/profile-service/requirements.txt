@@ -1,5 +1,8 @@
 fastapi
-uvicorn
+uvicorn[standard]
 psycopg2-binary
-flake8
+pydantic
+python-dotenv
+pytest
+requests
 httpx
