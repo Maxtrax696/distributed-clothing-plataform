@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 FROM python:3.11
-=======
+
 FROM python:3.11-slim
->>>>>>> qa
 
 WORKDIR /app
 
