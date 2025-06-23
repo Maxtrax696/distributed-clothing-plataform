@@ -1,17 +1,42 @@
+<<<<<<< HEAD
 -- Tabla principal: usuarios (padre)
+=======
+-- Tabla de usuarios
+>>>>>>> qa
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
+<<<<<<< HEAD
     birth_date DATE,
     email VARCHAR(255) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     phone_number VARCHAR(50),
+=======
+    birth_date DATE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    phone_number VARCHAR(20),
+>>>>>>> qa
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+<<<<<<< HEAD
 -- Tabla de direcciones (cada usuario puede tener muchas)
+=======
+-- Tabla de perfiles
+CREATE TABLE IF NOT EXISTS profiles (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    full_name VARCHAR(255),
+    birth_date DATE,
+    phone_number VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Tabla de direcciones
+>>>>>>> qa
 CREATE TABLE IF NOT EXISTS addresses (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
@@ -24,7 +49,11 @@ CREATE TABLE IF NOT EXISTS addresses (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+<<<<<<< HEAD
 -- Tabla de roles del sistema
+=======
+-- Tabla de roles
+>>>>>>> qa
 CREATE TABLE IF NOT EXISTS roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL,
@@ -40,6 +69,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
+<<<<<<< HEAD
 -- Roles predeterminados
 DO $$
 BEGIN
@@ -51,3 +81,13 @@ BEGIN
         INSERT INTO roles (name, description) VALUES ('administrator', 'Rol con privilegios de administrador');
     END IF;
 END $$;
+=======
+-- Inserts iniciales
+INSERT INTO roles (name, description)
+SELECT 'cliente', 'Rol básico para usuarios registrados'
+WHERE NOT EXISTS (SELECT 1 FROM roles WHERE name = 'cliente');
+
+INSERT INTO roles (name, description)
+SELECT 'administrator', 'Rol con privilegios de administrador'
+WHERE NOT EXISTS (SELECT 1 FROM roles WHERE name = 'administrator');
+>>>>>>> qa

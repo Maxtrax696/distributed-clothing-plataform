@@ -5,7 +5,10 @@ from typing import Optional
 
 router = APIRouter(prefix="/api/roles")
 
+<<<<<<< HEAD
 # Modelos locales
+=======
+>>>>>>> qa
 class Role(BaseModel):
     name: str
     description: Optional[str] = None
@@ -18,8 +21,11 @@ class UserRoleAssign(BaseModel):
     user_id: int
     role_id: int
 
+<<<<<<< HEAD
 
 # Obtener todos los roles
+=======
+>>>>>>> qa
 @router.get("/")
 def list_roles():
     conn = get_connection()
@@ -30,8 +36,11 @@ def list_roles():
     conn.close()
     return [{"id": r[0], "name": r[1], "description": r[2]} for r in rows]
 
+<<<<<<< HEAD
 
 # Obtener un rol por ID
+=======
+>>>>>>> qa
 @router.get("/{role_id}")
 def get_role(role_id: int):
     conn = get_connection()
@@ -44,8 +53,11 @@ def get_role(role_id: int):
         raise HTTPException(status_code=404, detail="Role not found")
     return {"id": row[0], "name": row[1], "description": row[2]}
 
+<<<<<<< HEAD
 
 # Crear un nuevo rol
+=======
+>>>>>>> qa
 @router.post("/")
 def create_role(role: Role):
     conn = get_connection()
@@ -56,8 +68,11 @@ def create_role(role: Role):
     conn.close()
     return {"message": "Role successfully created"}
 
+<<<<<<< HEAD
 
 # Actualizar un rol existente
+=======
+>>>>>>> qa
 @router.put("/{role_id}")
 def update_role(role_id: int, role: RoleUpdate):
     conn = get_connection()
@@ -74,8 +89,11 @@ def update_role(role_id: int, role: RoleUpdate):
     conn.close()
     return {"message": "Role successfully updated"}
 
+<<<<<<< HEAD
 
 # Eliminar un rol
+=======
+>>>>>>> qa
 @router.delete("/{role_id}")
 def delete_role(role_id: int):
     conn = get_connection()
@@ -91,8 +109,11 @@ def delete_role(role_id: int):
     conn.close()
     return {"message": "Role successfully deleted"}
 
+<<<<<<< HEAD
 
 # Asignar rol a un usuario
+=======
+>>>>>>> qa
 @router.post("/assign")
 def assign_role(data: UserRoleAssign):
     conn = get_connection()
@@ -108,8 +129,11 @@ def assign_role(data: UserRoleAssign):
     conn.close()
     return {"message": f"Role {data.role_id} assigned to user {data.user_id}"}
 
+<<<<<<< HEAD
 
 # Obtener roles asignados a un usuario
+=======
+>>>>>>> qa
 @router.get("/user/{user_id}")
 def get_roles_by_user(user_id: int):
     conn = get_connection()
@@ -125,8 +149,11 @@ def get_roles_by_user(user_id: int):
     conn.close()
     return [{"id": r[0], "name": r[1], "description": r[2]} for r in rows]
 
+<<<<<<< HEAD
 
 # Asignación automática del rol "cliente"
+=======
+>>>>>>> qa
 @router.post("/auto-assign/{user_id}")
 def auto_assign_cliente(user_id: int):
     conn = get_connection()
@@ -149,8 +176,11 @@ def auto_assign_cliente(user_id: int):
         cur.close()
         conn.close()
 
+<<<<<<< HEAD
 
 # Eliminar todos los roles asignados a un usuario (para update frontend)
+=======
+>>>>>>> qa
 @router.delete("/user/{user_id}")
 def delete_user_roles(user_id: int):
     conn = get_connection()

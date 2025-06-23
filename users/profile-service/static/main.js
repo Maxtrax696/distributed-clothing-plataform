@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function clearForm() {
   document.getElementById("create_user_id").value = "";
   document.getElementById("full_name").value = "";
@@ -62,10 +63,17 @@ document.getElementById("getForm").addEventListener("submit", async function (e)
 // Manejar botón Update
 document.getElementById("updateButton").addEventListener("click", async function () {
   const user_id = document.getElementById("create_user_id").value;
+=======
+document.getElementById("profileForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const user_id = document.getElementById("user_id").value;
+>>>>>>> qa
   const full_name = document.getElementById("full_name").value;
   const birth_date = document.getElementById("birth_date").value;
   const phone_number = document.getElementById("phone_number").value;
 
+<<<<<<< HEAD
   const data = {
     full_name: full_name || null,
     birth_date: birth_date || null,
@@ -99,3 +107,20 @@ document.getElementById("deleteButton").addEventListener("click", async function
   clearForm();
   clearForm();
 });
+=======
+  const response = await fetch("/api/profile/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id, full_name, birth_date, phone_number })
+  });
+
+  const result = document.getElementById("result");
+  const data = await response.json();
+
+  if (response.ok) {
+    result.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+  } else {
+    result.innerHTML = `<div class="alert alert-danger">Error: ${data.detail}</div>`;
+  }
+});
+>>>>>>> qa

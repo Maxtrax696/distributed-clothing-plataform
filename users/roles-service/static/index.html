@@ -11,6 +11,7 @@
   <h2 class="text-primary mb-4">🎛 Gestión de Roles</h2>
 
   <!-- Buscar usuario por correo -->
+<<<<<<< HEAD
   <!-- Buscar usuario por nombre de correo con autosugerencia -->
 <div class="card mb-4">
   <div class="card-header bg-info text-white">Buscar Usuario</div>
@@ -30,6 +31,25 @@
   </div>
 </div>
 
+=======
+  <div class="card mb-4">
+    <div class="card-header bg-info text-white">Buscar Usuario</div>
+    <div class="card-body">
+      <form id="searchForm" class="row g-3">
+        <div class="col-md-8 position-relative">
+          <input type="text" id="search_email" class="form-control" placeholder="Escribe el nombre del correo..." autocomplete="off" required>
+          <ul id="suggestions" class="list-group position-absolute w-100" style="z-index: 10;"></ul>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-info w-100">Buscar</button>
+        </div>
+      </form>
+
+      <div id="userInfo" class="mt-4"></div>
+      <div id="userRoles" class="mt-2"></div>
+    </div>
+  </div>
+>>>>>>> qa
 
   <!-- Formulario de actualización de rol -->
   <div class="card">

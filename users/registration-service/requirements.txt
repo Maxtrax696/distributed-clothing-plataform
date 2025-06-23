@@ -1,7 +1,14 @@
 fastapi
 uvicorn
 psycopg2-binary
+<<<<<<< HEAD
 python-dotenv
 bcrypt
 pydantic[email]
 requests
+=======
+bcrypt
+python-dotenv
+requests
+email-validator
+>>>>>>> qa

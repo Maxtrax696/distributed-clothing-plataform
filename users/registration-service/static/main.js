@@ -8,7 +8,10 @@ const result = document.getElementById("message");
 
 let emailIsValid = false;
 
+<<<<<<< HEAD
 // Validar si el email ya existe
+=======
+>>>>>>> qa
 emailInput.addEventListener("blur", async () => {
   const username = emailInput.value.trim();
   const fullEmail = username + "@flakos.com";
@@ -16,6 +19,7 @@ emailInput.addEventListener("blur", async () => {
   if (username.length === 0) {
     feedback.innerText = "";
     submitBtn.disabled = true;
+<<<<<<< HEAD
     emailIsValid = false;
     return;
   }
@@ -68,6 +72,45 @@ form.addEventListener("submit", async (e) => {
   }
 
   // Datos a enviar
+=======
+    return;
+  }
+
+  const res = await fetch(`/api/register/check-email?email=${encodeURIComponent(fullEmail)}`);
+  const data = await res.json();
+
+  if (data.exists) {
+    feedback.innerHTML = `<span class="text-danger">❌ El correo ya está registrado</span>`;
+    emailIsValid = false;
+    submitBtn.disabled = true;
+  } else {
+    feedback.innerHTML = `<span class="text-success">✔ Correo disponible</span>`;
+    emailIsValid = true;
+    submitBtn.disabled = false;
+  }
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!emailIsValid) return;
+
+  const fullEmail = emailInput.value.trim() + "@flakos.com";
+  const phone = phoneInput.value;
+  const password = passwordInput.value;
+
+  if (!/^\d{8}$/.test(phone)) {
+    result.innerHTML = `<div class="alert alert-danger">📵 Teléfono debe tener 10 dígitos empezando por 09</div>`;
+    return;
+  }
+
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    result.innerHTML = `<div class="alert alert-danger">🔐 Contraseña débil: 8+ caracteres, 1 mayúscula y símbolo</div>`;
+    return;
+  }
+
+>>>>>>> qa
   const data = {
     first_name: document.getElementById("first_name").value,
     last_name: document.getElementById("last_name").value,
@@ -77,11 +120,18 @@ form.addEventListener("submit", async (e) => {
     phone_number: "09" + phone
   };
 
+<<<<<<< HEAD
   // Enviar a backend
   const response = await fetch("/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
+=======
+  const response = await fetch("/api/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+>>>>>>> qa
   });
 
   const resData = await response.json();

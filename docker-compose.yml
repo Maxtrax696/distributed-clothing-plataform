@@ -60,6 +60,7 @@ services:
     container_name: registration-service
     depends_on:
       - db
+<<<<<<< HEAD
     ports:
       - "8003:8003"
     environment:
@@ -72,5 +73,16 @@ services:
     command: >
       sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003"
 
+=======
+      - roles-service
+    env_file:
+      - ./users/registration-service/.env
+    ports:
+      - "8003:8003"
+    command: >
+      sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003"
+
+
+>>>>>>> qa
 volumes:
   db_data:

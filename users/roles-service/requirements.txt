@@ -1,4 +1,9 @@
 fastapi
 uvicorn
+<<<<<<< HEAD
 psycopg2
 requests
+=======
+psycopg2-binary
+python-dotenv
+>>>>>>> qa

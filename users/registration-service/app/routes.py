@@ -7,7 +7,10 @@ import os
 
 router = APIRouter(prefix="/api/register")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> qa
 @router.post("/")
 def register_user(user: UserCreate):
     conn = get_connection()
@@ -39,6 +42,10 @@ def register_user(user: UserCreate):
         cur.close()
         conn.close()
 
+<<<<<<< HEAD
+=======
+    # Llamar al roles-service para asignar rol "cliente"
+>>>>>>> qa
     try:
         roles_url = os.getenv("ROLES_SERVICE_URL", "http://roles-service:8001")
         response = requests.post(f"{roles_url}/api/roles/auto-assign/{user_id}")
@@ -49,11 +56,15 @@ def register_user(user: UserCreate):
 
     return {"message": "User registered and role assigned successfully"}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> qa
 @router.get("/check-email")
 def check_email_exists(email: str = Query(...)):
     conn = get_connection()
     cur = conn.cursor()
+<<<<<<< HEAD
     try:
         cur.execute("SELECT 1 FROM users WHERE email = %s", (email,))
         exists = cur.fetchone() is not None
@@ -115,11 +126,41 @@ def get_user_by_email(email: str):
     finally:
         cur.close()
         conn.close()
+=======
+    cur.execute("SELECT 1 FROM users WHERE email = %s", (email,))
+    exists = cur.fetchone() is not None
+    cur.close()
+    conn.close()
+    return {"exists": exists}
+
+@router.get("/email/{email}")
+def get_user_by_email(email: str):
+    email = email.strip().lower()
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT id, first_name, last_name, email
+        FROM users
+        WHERE LOWER(email) = %s
+    """, (email,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not row:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "id": row[0],
+        "first_name": row[1],
+        "last_name": row[2],
+        "email": row[3]
+    }
+>>>>>>> qa
 
 @router.get("/search-by-username")
 def search_users_by_email_username(username: str = Query(..., min_length=1)):
     conn = get_connection()
     cur = conn.cursor()
+<<<<<<< HEAD
     try:
         cur.execute("""
             SELECT id, first_name, last_name, email
@@ -141,3 +182,21 @@ def search_users_by_email_username(username: str = Query(..., min_length=1)):
     finally:
         cur.close()
         conn.close()
+=======
+    cur.execute("""
+        SELECT id, first_name, last_name, email
+        FROM users
+        WHERE LOWER(SPLIT_PART(email, '@', 1)) LIKE %s
+    """, (f"%{username.strip().lower()}%",))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return [
+        {
+            "id": row[0],
+            "first_name": row[1],
+            "last_name": row[2],
+            "email": row[3]
+        } for row in rows
+    ]
+>>>>>>> qa

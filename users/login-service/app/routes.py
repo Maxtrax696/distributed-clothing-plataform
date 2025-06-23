@@ -7,7 +7,10 @@ import os
 
 router = APIRouter(prefix="/api")
 
+<<<<<<< HEAD
 # Seguridad
+=======
+>>>>>>> qa
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "secret")
 ALGORITHM = "HS256"
