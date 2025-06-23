@@ -43,5 +43,34 @@ services:
     command: >
       sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8001"
 
+  login-service:
+    build: ./users/login-service
+    container_name: login-service
+    depends_on:
+      - db
+    env_file:
+      - ./users/login-service/.env
+    ports:
+      - "8002:8002"
+    command: >
+      sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8002"
+
+  registration-service:
+    build: ./users/registration-service
+    container_name: registration-service
+    depends_on:
+      - db
+    ports:
+      - "8003:8003"
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      ROLES_SERVICE_URL: http://roles-service:8001
+    command: >
+      sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8003"
+
 volumes:
   db_data:

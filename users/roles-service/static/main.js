@@ -1,92 +1,134 @@
-const baseUrl = "http://localhost:8001/api/roles/";
+const baseRolesUrl = "http://localhost:8001/api/roles";
 
-// CREATE
-document.getElementById("createForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
+let currentUserId = null;
+let currentRoleId = null;
 
-  const name = document.getElementById("role_name").value;
-  const description = document.getElementById("role_description").value;
+const suggestionsBox = document.getElementById("suggestions");
+const searchInput = document.getElementById("search_email");
 
-  const data = { name, description };
+// Autosugerencia al escribir
+searchInput.addEventListener("input", async () => {
+  const query = searchInput.value.trim();
+  suggestionsBox.innerHTML = "";
 
-  const response = await fetch(baseUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
+  if (query.length < 2) return;
+
+  const res = await fetch(`http://localhost:8003/api/register/search-by-username?username=
+    ${encodeURIComponent(query)}`);
+  const users = await res.json();
+
+  users.forEach(user => {
+    const li = document.createElement("li");
+    li.className = "list-group-item list-group-item-action";
+    li.textContent = user.email;
+    li.addEventListener("click", () => {
+      searchInput.value = user.email;
+      suggestionsBox.innerHTML = "";
+      document.getElementById("searchForm").dispatchEvent(new Event("submit"));
+    });
+    suggestionsBox.appendChild(li);
   });
-
-  const result = await response.json();
-  alert(result.message || JSON.stringify(result));
-  clearForm();
 });
 
-// READ (GET)
-document.getElementById("getForm").addEventListener("submit", async function (e) {
+// Ocultar sugerencias al salir del campo
+searchInput.addEventListener("blur", () => {
+  setTimeout(() => suggestionsBox.innerHTML = "", 200);
+});
+
+// Buscar usuario y roles
+document.getElementById("searchForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const role_id = document.getElementById("get_role_id").value;
+  const email = document.getElementById("search_email").value;
+  const userInfoDiv = document.getElementById("userInfo");
+  const rolesDiv = document.getElementById("userRoles");
+  const roleSelect = document.getElementById("role_select");
+  const updateBtn = document.getElementById("updateBtn");
 
-  const response = await fetch(baseUrl + role_id);
-  const data = await response.json();
+  userInfoDiv.innerHTML = "";
+  rolesDiv.innerHTML = "";
+  roleSelect.innerHTML = '<option value="">Selecciona un rol</option>';
+  updateBtn.disabled = true;
 
-  if (response.ok) {
-    document.getElementById("roleDisplay").textContent = JSON.stringify(data, null, 2);
-    document.getElementById("role_id").value = data.id;
-    document.getElementById("role_name").value = data.name;
-    document.getElementById("role_description").value = data.description || "";
-
-    document.getElementById("updateButton").classList.remove("d-none");
-    document.getElementById("deleteButton").classList.remove("d-none");
-  } else {
-    document.getElementById("roleDisplay").textContent = "Error: " + data.detail;
+  // Buscar usuario por correo
+  const userRes = await fetch(`http://localhost:8003/api/register/email/
+    ${encodeURIComponent(email.trim())}`);
+  if (!userRes.ok) {
+    userInfoDiv.innerHTML = `<div class="alert alert-danger"> Usuario no encontrado.</div>`;
+    return;
   }
+
+  const user = await userRes.json();
+  currentUserId = user.id;
+  document.getElementById("update_user_id").value = user.id;
+
+  userInfoDiv.innerHTML = `
+    <div class="alert alert-light">
+      <strong>Nombre:</strong> ${user.first_name} ${user.last_name} <br>
+      <strong>Email:</strong> ${user.email}
+    </div>
+  `;
+
+  // Obtener roles actuales del usuario
+  const rolesRes = await fetch(`${baseRolesUrl}/user/${user.id}`);
+  const roles = await rolesRes.json();
+
+  if (roles.length > 0) {
+    currentRoleId = roles[0].id;
+    rolesDiv.innerHTML = `
+      <div class="alert alert-info">Rol actual: <strong>${roles[0].name}</strong></div>
+    `;
+  } else {
+    currentRoleId = null;
+    rolesDiv.innerHTML = `<div class="alert alert-warning">
+    Este usuario no tiene un rol asignado.</div>`;
+  }
+
+  // Cargar todos los roles disponibles
+  const allRolesRes = await fetch(`${baseRolesUrl}`);
+  const allRoles = await allRolesRes.json();
+
+  allRoles.forEach(role => {
+    const option = document.createElement("option");
+    option.value = role.id;
+    option.textContent = role.name;
+    if (role.id === currentRoleId) {
+      option.selected = true;
+    }
+    roleSelect.appendChild(option);
+  });
 });
 
-// UPDATE
-document.getElementById("updateButton").addEventListener("click", async function () {
-  const role_id = document.getElementById("role_id").value;
-  const name = document.getElementById("role_name").value;
-  const description = document.getElementById("role_description").value;
+// Habilitar botón si se cambia el rol
+document.getElementById("role_select").addEventListener("change", () => {
+  const selected = parseInt(document.getElementById("role_select").value);
+  document.getElementById("updateBtn").disabled = selected === currentRoleId || 
+  isNaN(selected);
+});
 
-  const data = { name, description };
+// Actualizar rol
+document.getElementById("updateRoleForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-  const response = await fetch(baseUrl + role_id, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
+  const userId = parseInt(document.getElementById("update_user_id").value);
+  const newRoleId = parseInt(document.getElementById("role_select").value);
+  const updateBtn = document.getElementById("updateBtn");
+
+  if (newRoleId === currentRoleId || isNaN(newRoleId)) return;
+
+  // Eliminar rol anterior del usuario (si existe)
+  await fetch(`${baseRolesUrl}/user/${userId}`, { method: "DELETE" });
+
+  // Asignar nuevo rol
+  const res = await fetch(`${baseRolesUrl}/assign`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user_id: userId, role_id: newRoleId })
   });
 
-  const result = await response.json();
-  alert(result.message || JSON.stringify(result));
-  clearForm();
+  const data = await res.json();
+  alert(data.message || "Rol actualizado");
+
+  updateBtn.disabled = true;
+  document.getElementById("searchForm").dispatchEvent(new Event("submit"));
 });
-
-// DELETE
-document.getElementById("deleteButton").addEventListener("click", async function () {
-  const role_id = document.getElementById("role_id").value;
-  const confirmed = confirm(`Are you sure you want to delete role ${role_id}?`);
-  if (!confirmed) return;
-
-  const response = await fetch(baseUrl + role_id, {
-    method: "DELETE"
-  });
-
-  const result = await response.json();
-  alert(result.message || JSON.stringify(result));
-  clearForm();
-});
-
-// LIMPIAR FORMULARIO
-function clearForm() {
-  document.getElementById("role_id").value = "";
-  document.getElementById("role_name").value = "";
-  document.getElementById("role_description").value = "";
-  document.getElementById("roleDisplay").textContent = "";
-
-  document.getElementById("updateButton").classList.add("d-none");
-  document.getElementById("deleteButton").classList.add("d-none");
-}

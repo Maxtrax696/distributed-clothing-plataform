@@ -15,24 +15,22 @@ const baseUrl = "http://localhost:8000/api/profiles/";
 document.getElementById("createForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const user_id = document.getElementById("create_user_id").value;
+  const user_id = parseInt(document.getElementById("create_user_id").value);
   const full_name = document.getElementById("full_name").value;
-  const birth_date = document.getElementById("birth_date").value;
+  const raw_date = document.getElementById("birth_date").value;
+  const birth_date = raw_date ? new Date(raw_date).toISOString().slice(0, 10) : null;
   const phone_number = document.getElementById("phone_number").value;
 
   const data = { user_id, full_name, birth_date, phone_number };
 
   const response = await fetch(baseUrl, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
 
   const result = await response.json();
   alert(result.message || JSON.stringify(result));
-  clearForm();
   clearForm();
 });
 

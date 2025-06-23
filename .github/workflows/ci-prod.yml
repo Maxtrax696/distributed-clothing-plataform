@@ -29,3 +29,13 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/roles-service:latest users/roles-service
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/roles-service:latest
+    
+    - name: Build y Push del login-service
+      run: |
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/login-service:latest users/login-service
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/login-service:latest
+
+    - name: Build y Push del registration-service
+      run: |
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/registration-service:latest users/registration-service
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/registration-service:latest
