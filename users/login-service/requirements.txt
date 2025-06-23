@@ -1,13 +1,10 @@
 fastapi
 uvicorn
 psycopg2-binary
-<<<<<<< HEAD
 python-jose
 passlib[bcrypt]
 email-validator
-=======
 bcrypt
 python-jose
 email-validator
 passlib
->>>>>>> qa

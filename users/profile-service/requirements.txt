@@ -2,11 +2,3 @@ fastapi
 uvicorn
 psycopg2-binary
 python-dotenv
-<<<<<<< HEAD
-requests
-httpx
-pytest
-python-jose
-
-=======
->>>>>>> qa
