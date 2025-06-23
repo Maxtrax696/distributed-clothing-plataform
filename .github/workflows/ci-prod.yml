@@ -24,20 +24,20 @@ jobs:
 
       - name: Build & Push Profile Service
         run: |
-          docker build -t maxtarx969/profile-service:latest users/profile-service
-          docker push maxtarx969/profile-service:latest
+          docker build -t maxtrax969/profile-service:latest users/profile-service
+          docker push maxtrax969/profile-service:latest
 
       - name: Build & Push Roles Service
         run: |
-          docker build -t maxtarx969/roles-service:latest users/roles-service
-          docker push maxtarx969/roles-service:latest
+          docker build -t maxtrax969/roles-service:latest users/roles-service
+          docker push maxtrax969/roles-service:latest
 
       - name: Build & Push Login Service
         run: |
-          docker build -t maxtarx969/login-service:latest users/login-service
-          docker push maxtarx969/login-service:latest
+          docker build -t maxtrax969/login-service:latest users/login-service
+          docker push maxtrax969/login-service:latest
 
       - name: Build & Push Registration Service
         run: |
-          docker build -t maxtarx969/registration-service:latest users/registration-service
-          docker push maxtarx969/registration-service:latest
+          docker build -t maxtrax969/registration-service:latest users/registration-service
+          docker push maxtrax969/registration-service:latest
