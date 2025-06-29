@@ -14,7 +14,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./devops/init:/docker-entrypoint-initdb.d
-
+  
   profile-service:
     build: ./users/profile-service
     container_name: profile-service

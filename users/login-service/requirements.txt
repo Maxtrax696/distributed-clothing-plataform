@@ -5,3 +5,4 @@ bcrypt
 python-jose
 email-validator
 passlib
+python-dotenv

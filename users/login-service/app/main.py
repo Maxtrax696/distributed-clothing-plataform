@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from app.routes import router
+from app.routes.auth_routes import router
 
 app = FastAPI()
 app.include_router(router)
@@ -14,4 +13,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+@app.get("/")
+def root():
+    return {"message": "Login Service is running"}

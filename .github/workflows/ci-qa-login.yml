@@ -1,10 +1,14 @@
-name: CI QA - Roles Service
+name: CI QA - Login Service
 
 on:
   push:
     branches: [ "qa" ]
+    paths:
+      - 'users/login-service/**'
   pull_request:
     branches: [ "qa" ]
+    paths:
+      - 'users/login-service/**'
 
 jobs:
   build-and-test:
