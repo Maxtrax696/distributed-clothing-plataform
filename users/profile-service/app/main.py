@@ -1,10 +1,9 @@
 from fastapi import FastAPI
+from app.controllers import profile_controller
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import router
-from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(profile_controller.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,4 +13,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+@app.get("/")
+def root():
+    return {"message": "Profile Service is running"}
