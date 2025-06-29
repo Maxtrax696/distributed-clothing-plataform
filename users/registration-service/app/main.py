@@ -2,10 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
-from app.routes import router
+from app.routes import registration_router
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(registration_router.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -15,10 +15,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Montar archivos estáticos
-app.mount("/static", StaticFiles(directory="static", html=True), name="static")
-
-# Redirigir la raíz a index.html
 @app.get("/")
 def root():
-    return RedirectResponse(url="/static/index.html")
+    return {"message": "Registration Service is running"}
