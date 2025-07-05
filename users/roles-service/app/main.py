@@ -1,15 +1,10 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from app.routes import role_routes
+from app.controllers import role_controller
 
-app = FastAPI()
-
-app.include_router(role_routes.router)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+app = FastAPI(
+    title="Roles Service API",
+    description="Microservicio para gestionar y actualizar roles de usuarios.",
+    version="1.0.0"
 )
+
+app.include_router(role_controller.router, prefix="/api/roles", tags=["Roles"])

@@ -6,3 +6,4 @@ python-jose
 email-validator
 passlib
 python-dotenv
+python-jose

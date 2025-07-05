@@ -9,7 +9,7 @@ service = ProfileService()
 def get_profile(user_id: int):
     return service.get_profile(user_id)
 
-@router.get("/")
+@router.get("/", tags=["Profiles"], summary="Listar perfiles")
 def list_profiles():
     return service.list_profiles()
 

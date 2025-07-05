@@ -1,6 +1,10 @@
 from pydantic import BaseModel
-from typing import Optional
 
-class RoleUpdate(BaseModel):
-    name: Optional[str]
-    description: Optional[str]
+class RoleUpdateRequest(BaseModel):
+    name: str
+    description: str
+
+class RoleResponse(BaseModel):
+    id: int
+    name: str
+    description: str

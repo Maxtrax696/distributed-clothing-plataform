@@ -1,10 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import RedirectResponse
 from app.routes import registration_router
 
-app = FastAPI()
+app = FastAPI(
+    title="Registration Service - API",
+    description="Microservicio responsable del registro de usuarios, creación automática de perfiles y asignación del rol 'cliente'.",
+    version="1.0.0",
+    contact={
+        "name": "Distributed Clothing Team",
+        "email": "soporte@distribuidos.com"
+    },
+    openapi_tags=[
+        {
+            "name": "Registro",
+            "description": "Operaciones relacionadas con el registro de usuarios"
+        }
+    ]
+)
+
 app.include_router(registration_router.router)
 
 app.add_middleware(
@@ -15,6 +28,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/", tags=["Registro"])
 def root():
     return {"message": "Registration Service is running"}
